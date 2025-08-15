@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dhananjay Rupanwar — Futuristic Web Resume</title>
+  <meta name="description" content="A hyper-modern, animated, futuristic single-file web resume." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🚀</text></svg>">
+
+  <style>
+    /* ------------------------------
+       RESET & THEMING
+    ------------------------------ */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: #e6f1ff;
+      background: radial-gradient(1200px 800px at 70% 10%, rgba(0,255,255,0.08), transparent 60%),
+                  radial-gradient(900px 900px at 10% 30%, rgba(255,0,255,0.08), transparent 60%),
+                  #0a0f18;
+      overflow-x: hidden;
+    }
+    :root {
+      --neon-cyan: #00eaff;
+      --neon-magenta: #ff00e6;
+      --neon-lime: #c6ff00;
+      --muted: #a3b1c6;
+      --glass: rgba(255,255,255,0.06);
+      --glass-strong: rgba(255,255,255,0.12);
+      --shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 0 30px rgba(255,255,255,0.03);
+      --radius: 18px;
+    }
+
+    /* Subtle scanline/noise overlay for a cyber feel */
+    .noise::before{
+      content: "";
+      pointer-events:none;
+      position: fixed; inset:0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.035"/></svg>');
+      mix-blend-mode: overlay; opacity: .6; z-index: 1;
+    }
+
+    /* ------------------------------
+       NAV
+    ------------------------------ */
+    header{
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(135deg, rgba(0, 234, 255, .08), rgba(255, 0, 230, .08));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px; padding: 10px 16px; box-shadow: var(--shadow);
+    }
+    header nav { display: flex; gap: 12px; align-items: center; }
+    header a{
+      text-decoration: none; color: #d7e4ff; padding: 8px 14px; border-radius: 999px; font-weight: 600; letter-spacing: .4px;
+      position: relative; overflow: hidden; isolation: isolate;
+    }
+    header a::before{
+      content:""; position:absolute; inset:0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-120%); transition: transform .7s ease;
+    }
+    header a:hover::before{ transform: translateX(120%); }
+
+    /* ------------------------------
+       HERO
+    ------------------------------ */
+    .hero {
+      position: relative; min-height: 100svh; display: grid; place-items: center; text-align: center; padding: 120px 20px 80px;
+    }
+    .hero-inner{
+      position: relative; z-index: 5; max-width: 1100px; width: 100%;
+      padding: 28px; border-radius: var(--radius);
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; font-weight: 600; color: #0a0f18;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+      filter: drop-shadow(0 10px 30px rgba(0,234,255,.3));
+    }
+    .name {
+      font-family: Orbitron, Inter, ui-sans-serif; font-size: clamp(36px, 6vw, 76px); letter-spacing: 3px; margin: 18px 0 10px; font-weight: 800;
+      text-shadow: 0 6px 40px rgba(0,234,255,.25), 0 0 24px rgba(255,0,230,.15);
+    }
+    .glitch {
+      position: relative; display: inline-block;
+    }
+    .glitch::before, .glitch::after{
+      content: attr(data-text); position:absolute; left:0; top:0; width:100%; overflow:hidden; clip-path: inset(0 0 0 0);
+    }
+    .glitch::before { color: var(--neon-cyan); transform: translate(2px,0); mix-blend-mode: screen; animation: glitch 2.8s infinite linear alternate-reverse; }
+    .glitch::after { color: var(--neon-magenta); transform: translate(-2px,0); mix-blend-mode: screen; animation: glitch 1.8s infinite linear alternate; }
+    @keyframes glitch {
+      0% { clip-path: inset(0 0 80% 0); }
+      20% { clip-path: inset(10% 0 60% 0); }
+      40% { clip-path: inset(40% 0 20% 0); }
+      60% { clip-path: inset(80% 0 0 0); }
+      80% { clip-path: inset(60% 0 10% 0); }
+      100% { clip-path: inset(0 0 0 0); }
+    }
+    .role { color: var(--muted); font-size: clamp(14px, 2.4vw, 22px); margin-bottom: 22px; }
+
+    .cta {
+      display: inline-flex; gap: 14px; margin-top: 10px; flex-wrap: wrap; justify-content: center;
+    }
+    .btn {
+      padding: 14px 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.16);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); color: #e6f1ff; font-weight: 700; letter-spacing: .4px;
+      box-shadow: var(--shadow); position: relative; overflow: hidden; transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .btn:hover{ transform: translateY(-2px) scale(1.02); box-shadow: 0 20px 60px rgba(0, 234, 255, .25); }
+    .btn--primary { border-color: rgba(0,234,255,0.4); background: linear-gradient(120deg, rgba(0,234,255,0.28), rgba(255,0,230,0.18)); }
+
+    /* ------------------------------
+       SECTIONS
+    ------------------------------ */
+    section { position: relative; z-index: 3; padding: 80px 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .card {
+      background: var(--glass); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .section-title { font-family: Orbitron, Inter; font-size: clamp(24px, 3.5vw, 36px); letter-spacing: 1px; margin: 0 0 20px; }
+    .section-sub { color: var(--muted); margin-top: -6px; margin-bottom: 24px; }
+
+    /* GRID */
+    .grid { display: grid; gap: 18px; }
+    @media (min-width: 768px){ .grid-2 { grid-template-columns: repeat(2,1fr); } .grid-3 { grid-template-columns: repeat(3,1fr);} }
+
+    /* SKILLS */
+    .skill { padding: 16px; border-radius: 14px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.08); }
+    .skill h4 { margin: 0 0 8px; font-size: 14px; letter-spacing: .6px; color: #cfe8ff; text-transform: uppercase; }
+    .meter { height: 10px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+    .bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta), var(--neon-lime)); box-shadow: 0 0 24px rgba(0,234,255,.3); }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 24px; }
+    .timeline::before{ content:""; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--neon-magenta), transparent); }
+    .entry{ position: relative; margin-bottom: 24px; }
+    .entry::before{ content:""; position: absolute; left: -2px; top: 6px; width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff, var(--neon-cyan)); box-shadow: 0 0 24px rgba(0,234,255,.7); }
+    .entry h4{ margin: 0 0 6px; }
+    .entry small{ color: var(--muted); }
+
+    /* PROJECTS */
+    .project {
+      position: relative; overflow: hidden; border-radius: 16px; border: 1px solid rgba(255,255,255,0.12); background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      transform-style: preserve-3d; perspective: 1000px; transition: transform .2s ease; cursor: pointer;
+    }
+    .project:hover{ transform: translateY(-2px) scale(1.01); }
+    .project .thumb { aspect-ratio: 16/9; background: linear-gradient(45deg, rgba(0,234,255,.2), rgba(255,0,230,.2)); filter: saturate(1.2) contrast(1.05); }
+    .project .body { padding: 14px 16px 18px; }
+    .chip { display: inline-block; font-size: 12px; opacity: .9; border: 1px solid rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 999px; margin-right: 8px; }
+
+    /* CONTACT */
+    .contact-form{ display: grid; gap: 12px; }
+    .input{ width: 100%; padding: 14px 16px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #e6f1ff; }
+    .input::placeholder{ color: #9fb3ca; }
+
+    /* FOOTER */
+    footer{ text-align: center; color: var(--muted); padding-bottom: 60px; }
+
+    /* Floating grid background lines */
+    .grid-bg {
+      position: fixed; inset: -10vh -10vw; z-index: 0; pointer-events: none; opacity: .25;
+      background-image: linear-gradient(rgba(0,234,255,.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,230,.15) 1px, transparent 1px);
+      background-size: 80px 80px, 80px 80px;
+      transform: perspective(800px) rotateX(60deg) translateY(-20vh);
+      filter: blur(1px);
+      animation: floatGrid 12s ease-in-out infinite alternate;
+    }
+    @keyframes floatGrid { from { transform: perspective(800px) rotateX(60deg) translateY(-24vh); } to { transform: perspective(800px) rotateX(60deg) translateY(-10vh); } }
+
+    /* Magnetic cursor */
+    .cursor-dot, .cursor-ring{
+      position: fixed; left: 0; top: 0; pointer-events: none; z-index: 1000; mix-blend-mode: difference;
+    }
+    .cursor-dot{ width: 8px; height: 8px; background: white; border-radius: 50%; transform: translate(-50%, -50%); }
+    .cursor-ring{ width: 36px; height: 36px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); }
+
+    /* Parallax stars canvas */
+    #stars { position: fixed; inset: 0; z-index: 0; }
+
+    /* Utility */
+    .center { display: grid; place-items: center; }
+    .muted { color: var(--muted); }
+    .marquee { overflow: hidden; white-space: nowrap; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.03); }
+    .marquee span { display: inline-block; padding: 8px 18px; animation: scroll 18s linear infinite; }
+    @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  </style>
+</head>
+<body class="noise">
+  <!-- Background elements -->
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <header>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <div class="badge">AVAILABLE FOR INTERNSHIPS • REMOTE & ONSITE</div>
+      <h1 class="name glitch" data-text="DHANANJAY RUPANWAR">DHANANJAY RUPANWAR</h1>
+      <p class="role">Unity & Web Developer • Final-year MIT AoE Pune • Building immersive, high‑performance experiences</p>
+      <div class="cta">
+        <a class="btn btn--primary" href="#projects">View Projects</a>
+        <a class="btn" href="#contact">Contact Me</a>
+        <a class="btn" href="mailto:dhananjay.rupanwar@gmail.com">Download Résumé (PDF)</a>
+      </div>
+      <div class="marquee" style="margin-top: 22px;">
+        <span>HTML • CSS • JavaScript • GSAP • Three.js • Unity • C# • React • Tailwind • Cybersecurity • DBMS • DAA • Applied Mathematics • Compiler Design •  &nbsp; • HTML • CSS • JavaScript • GSAP • Three.js • Unity • C# • React • Tailwind • Cybersecurity • DBMS • DAA • Applied Mathematics • Compiler Design •</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container grid grid-2">
+      <div class="card">
+        <h2 class="section-title">About Me</h2>
+        <p class="section-sub">Brief intro of who you are and what you're great at.</p>
+        <p>
+          I'm <strong>Dhananjay Rupanwar</strong> — a final‑year engineer from <strong>MIT Academy of Engineering, Pune</strong>. I build futuristic UIs, WebGL/Three.js visuals, and mobile‑ready <strong>Unity</strong> gameplay systems. I love performance, clean design, and solving tricky bugs fast.
+        </p>
+        <p class="muted">Pune, India • Phone: <a href="tel:+919529634073" style="color:var(--neon-cyan);">+91 95296 34073</a> • Email: <a href="mailto:dhananjay.rupanwar@gmail.com" style="color:var(--neon-cyan);">dhananjay.rupanwar@gmail.com</a></p>
+      </div>
+      <div class="card center">
+        <div>
+          <h3 style="margin-top:0">Quick Stats</h3>
+          <ul>
+            <li>Languages: JS/TS, C#, C++, HTML/CSS</li>
+            <li>Frameworks/Libraries: React, Three.js, GSAP</li>
+            <li>Tools: Git, Linux (Kali GNOME), VS Code, Unity, FreeCAD/Fusion 360</li>
+            <li>Domains: Game Dev (Android), WebGL, Cybersecurity & DBMS basics</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container">
+      <h2 class="section-title">Skills</h2>
+      <p class="section-sub">Auto-animated meters using GSAP on scroll.</p>
+      <div class="grid grid-3">
+        <article class="project">
+          <div class="thumb"></div>
+          <div class="body">
+            <h4>Online Transaction Fraud Detection System</h4>
+            <p class="muted">Mini‑project: dashboard UI, anomaly flags, and clean data views for investigation.</p>
+            <div>
+              <span class="chip">JavaScript</span>
+              <span class="chip">Charts</span>
+              <span class="chip">UX</span>
+            </div>
+          </div>
+        </article>
+        <article class="project">
+          <div class="thumb"></div>
+          <div class="body">
+            <h4>Unity Car & Vehicle System</h4>
+            <p class="muted">WheelCollider physics, braking, steering, speed limits, and mobile controls.</p>
+            <div>
+              <span class="chip">Unity</span>
+              <span class="chip">C#</span>
+              <span class="chip">Android</span>
+            </div>
+          </div>
+        </article>
+        <article class="project">
+          <div class="thumb"></div>
+          <div class="body">
+            <h4>BGMI‑style Terrain & Textures</h4>
+            <p class="muted">Fixed tiling/pattern issues, tuned LODs, and optimized materials for realism.</p>
+            <div>
+              <span class="chip">Unity</span>
+              <span class="chip">Shaders</span>
+              <span class="chip">Optimization</span>
+            </div>
+          </div>
+        </article>
+        <article class="project">
+          <div class="thumb"></div>
+          <div class="body">
+            <h4>Home Interior Paint Visualizer</h4>
+            <p class="muted">Imported Fusion assets into Unity and built a wall‑painting preview workflow.</p>
+            <div>
+              <span class="chip">Unity</span>
+              <span class="chip">3D</span>
+              <span class="chip">UX</span>
+            </div>
+          </div>
+        </article>
+        <article class="project">
+          <div class="thumb"></div>
+          <div class="body">
+            <h4>Cyber Resume (This Site)</h4>
+            <p class="muted">Extreme animation: GSAP scroll, glitch, magnetic cursor, and 3D starfield.</p>
+            <div>
+              <span class="chip">Three.js</span>
+              <span class="chip">GSAP</span>
+              <span class="chip">WebGL</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="container grid grid-2">
+      <div class="card">
+        <h2 class="section-title">Education</h2>
+        <p><strong>MIT Academy of Engineering, Pune</strong> — B.E. (Final Year)</p>
+        <ul>
+          <li>Relevant: DAA, DBMS, Compiler Design, Software Engineering</li>
+          <li>Clubs: Game Dev, Cybersecurity</li>
+        </ul>
+        <hr style="border-color: rgba(255,255,255,0.12); margin: 16px 0;">
+        <p><strong>Bhairavnath Vidyalay, Khutbav (BVK)</strong> — 11th & 12th</p>
+        <p><strong>Javaharlal Vidyalay, Kedgaon (JVK)</strong> — 10th</p>
+      </div>
+      <div class="card">
+        <h2 class="section-title">Achievements</h2>
+        <ul>
+          <li>Juspay Hiring Challenge candidate (2025)</li>
+          <li>Built a functional car controller for Android in Unity</li>
+          <li>Active Linux (Kali GNOME) user for development</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container grid grid-2">
+      <div class="card">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-sub">Reach out for internships, collaborations, or freelance work.</p>
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('Thanks! I will get back to you.');">
+          <input class="input" placeholder="Your Name" required>
+          <input class="input" placeholder="Email" type="email" required>
+          <textarea class="input" placeholder="Message" rows="5" required></textarea>
+          <button class="btn btn--primary" type="submit">Send Message</button>
+        </form>
+      </div>
+      <div class="card">
+        <h3>Socials</h3>
+        <p>
+          <a class="btn" href="https://github.com/dhanu74" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="btn" href="#">LinkedIn</a>
+          <a class="btn" href="#">Twitter / X</a>
+        </p>
+        <p class="muted">Email: <a href="mailto:dhananjay.rupanwar@gmail.com" style="color:var(--neon-cyan);">dhananjay.rupanwar@gmail.com</a></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <small>© <span id="year"></span> YOUR NAME — Powered by GSAP & Three.js • Designed with ♥</small>
+  </footer>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <!-- Three.js -->
+  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Fancy cursor
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx-4}px, ${my-4}px)`; });
+    const loop = () => { rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15; ring.style.transform = `translate(${rx-18}px, ${ry-18}px)`; requestAnimationFrame(loop); }; loop();
+
+    // Magnetic hover on buttons
+    document.querySelectorAll('.btn, header a').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - (r.left + r.width/2);
+        const y = e.clientY - (r.top + r.height/2);
+        btn.style.transform = `translate(${x*0.05}px, ${y*0.05}px)`;
+      });
+      btn.addEventListener('mouseleave', () => btn.style.transform = '');
+    });
+
+    // GSAP reveal animations
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from('.hero-inner', { y: 20, opacity: 0, duration: 1.2, ease: 'power4.out' });
+    gsap.utils.toArray('section').forEach((sec, i) => {
+      if(i === 0) return; // skip hero
+      gsap.from(sec.querySelectorAll('.section-title, .section-sub, .card, .project, .skill'), {
+        scrollTrigger: { trigger: sec, start: 'top 70%' },
+        y: 30, opacity: 0, duration: 0.9, ease: 'power3.out', stagger: 0.06
+      });
+    });
+
+    // Skill bars animate to their data-progress
+    document.querySelectorAll('.bar').forEach(bar => {
+      const target = +bar.dataset.progress;
+      gsap.to(bar, { width: target + '%', duration: 1.2, ease: 'power2.out', scrollTrigger: { trigger: bar, start: 'top 80%' } });
+    });
+
+    // Projects: slight 3D tilt
+    document.querySelectorAll('.project').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width * 2 - 1;
+        const y = (e.clientY - r.top) / r.height * 2 - 1;
+        card.style.transform = `rotateX(${-y*6}deg) rotateY(${x*6}deg) translateY(-2px) scale(1.01)`;
+      });
+      card.addEventListener('mouseleave', () => card.style.transform = '');
+    });
+
+    // Three.js starfield background (performant)
+    const canvas = document.getElementById('stars');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 1000);
+    camera.position.z = 1;
+
+    const stars = new THREE.BufferGeometry();
+    const starCount = 2000;
+    const positions = new Float32Array(starCount * 3);
+    for(let i=0; i<starCount*3; i+=3){
+      positions[i] = (Math.random()-0.5) * 8;   // x
+      positions[i+1] = (Math.random()-0.5) * 8; // y
+      positions[i+2] = -Math.random() * 10;     // z
+    }
+    stars.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const material = new THREE.PointsMaterial({ size: 0.01, color: 0x66ccff });
+    const starMesh = new THREE.Points(stars, material);
+    scene.add(starMesh);
+
+    const resize = () => { renderer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix(); };
+    window.addEventListener('resize', resize); resize();
+
+    let t = 0; function render(){ t += 0.002; starMesh.rotation.z = t; starMesh.rotation.x = Math.sin(t*0.7)*0.2; starMesh.rotation.y = Math.cos(t*0.6)*0.2; renderer.render(scene, camera); requestAnimationFrame(render); } render();
+
+    // Smooth scroll for nav
+    document.querySelectorAll('header a').forEach(a => a.addEventListener('click', e => {
+      e.preventDefault();
+      const id = a.getAttribute('href');
+      document.querySelector(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }));
+  </script>
+</body>
+</html>
